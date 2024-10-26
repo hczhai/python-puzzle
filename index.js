@@ -5,27 +5,27 @@ const quiz = {
     "questions": [
         {
             "type": "short",
-            "question": "Do not use \",\", create a list object \"[4, 5, 6]\".",
+            "question": "Do not use \",\", create a list object \"[4, 5, 3]\".",
             "entered": [],
-            "answers": ["[4]+[5]+[6]"]
+            "answers": ["[4]+[5]+[3]"]
         },
         {
             "type": "short",
-            "question": "Do not use \",\" and \"+\", create a list object \"[4, 5, 6]\".",
+            "question": "Do not use \",\" and \"+\", create a list object \"[4, 5, 3]\".",
             "entered": [],
-            "answers": ["[4].__add__([5]).__add__([6])"]
+            "answers": ["[4].__add__([5]).__add__([3])"]
         },
         {
             "type": "short",
-            "question": "Do not use \",\" inside \"[]\" and \"+\" and \".\", create a list object \"[4, 5, 6]\".",
+            "question": "Do not use \",\" inside \"[]\" and \"+\" and \".\", create a list object \"[4, 5, 3]\".",
             "entered": [],
-            "answers": ["getattr(getattr([4], '__add__')([5]), '__add__')([6])"]
+            "answers": ["getattr(getattr([4], '__add__')([5]), '__add__')([3])"]
         },
         {
             "type": "short",
-            "question": "Do not use \",\" and \"+\" and \".__\", create a list object \"[4, 5, 6]\".",
+            "question": "Do not use \",\" and \"+\" and \".__\", create a list object \"[4, 5, 3]\".",
             "entered": [],
-            "answers": ["getattr(*dict(__add__=getattr(*dict(__add__=[4]).popitem()[::-1])([5])).popitem()[::-1])([6])"]
+            "answers": ["getattr(*dict(__add__=getattr(*dict(__add__=[4]).popitem()[::-1])([5])).popitem()[::-1])([3])"]
         },
         {
             "type": "short",

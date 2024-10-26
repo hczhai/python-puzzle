@@ -49,7 +49,7 @@
                 for k in [","]:
                     if k in answer:
                         ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "[4, 5, 6]":
+                if "%r" % (res, ) != "[4, 5, 3]":
                     ok = "Wrong result"
                 if not isinstance(res, list):
                     ok = "Wrong type"
@@ -57,7 +57,7 @@
                 for k in [",", "+"]:
                     if k in answer:
                         ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "[4, 5, 6]":
+                if "%r" % (res, ) != "[4, 5, 3]":
                     ok = "Wrong result"
                 if not isinstance(res, list):
                     ok = "Wrong type"
@@ -73,7 +73,7 @@
                         dep -= 1
                     elif k == ',' and dep != 0:
                         ok = "Wrong (cannot have \"%s\" inside \"%s%s\")" % (',', '[', ']')
-                if "%r" % (res, ) != "[4, 5, 6]":
+                if "%r" % (res, ) != "[4, 5, 3]":
                     ok = "Wrong result"
                 if not isinstance(res, list):
                     ok = "Wrong type"
@@ -81,7 +81,7 @@
                 for k in [",", "+", ".__"]:
                     if k in answer:
                         ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "[4, 5, 6]":
+                if "%r" % (res, ) != "[4, 5, 3]":
                     ok = "Wrong result"
                 if not isinstance(res, list):
                     ok = "Wrong type"
