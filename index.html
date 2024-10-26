@@ -1,0 +1,233 @@
+<html>
+<head>
+    <title>Python Puzzle</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="https://brython.info/src/brython.js"></script>
+    <script type="text/javascript" src="https://brython.info/src/brython_stdlib.js"></script>
+</head>
+
+<body>
+    <div class="quiz-page-template-container">
+        <div class="quiz-header-container">
+            <div class="quiz-name-text-container">
+                <span class="quiz-name-text" id="quiz-name-x"> Python Puzzle </span>
+            </div>
+        </div>
+        <div class="quiz-main-page" id="quiz-main-page">
+            <div class="quiz-question-container" id="quiz-question-container">
+                <div class="quiz-question-text-container" id="quiz-question-text-container">
+                </div>
+                <div class="quiz-answer-text-container" id="quiz-answer-text-container">
+                    <ul class="quiz-answer-list" id="quiz-answer-list">
+                    </ul>
+                </div>
+            </div>
+            <div class="question-iteration-container">
+                <div class="progress-bar-container">
+                    <span class="progress-bar-text" id="progress-bar-text"></span>
+                    <div class="progress quiz-completion-outer-progress-bar" style="height: 3px;">
+                        <div class="quiz-completion-inner-progress-bar" id="quiz-progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="question-iteration-container-single" id="previous-question-load">
+                    <span class="question-iteration-icon"> ^ </span>
+                </div>
+                <div class="icon-flipped question-iteration-container-single" id="next-question-load">
+                    <span class="question-iteration-icon"> ^ </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+    <script type="text/python">
+        from browser import document
+
+        def chk_detail(res, answer):
+            idx = int(document.select_one('#quiz-name-x').innerHTML.split()[-1])
+            ok = "Correct"
+            if idx == 1:
+                for k in [","]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if "%r" % (res, ) != "[4, 5, 6]":
+                    ok = "Wrong result"
+                if not isinstance(res, list):
+                    ok = "Wrong type"
+            elif idx == 2:
+                for k in [",", "+"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if "%r" % (res, ) != "[4, 5, 6]":
+                    ok = "Wrong result"
+                if not isinstance(res, list):
+                    ok = "Wrong type"
+            elif idx == 3:
+                for k in [".", "+"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                dep = 0
+                for k in answer:
+                    if k == '[':
+                        dep += 1
+                    elif k == ']':
+                        dep -= 1
+                    elif k == ',' and dep != 0:
+                        ok = "Wrong (cannot have \"%s\" inside \"%s%s\")" % (',', '[', ']')
+                if "%r" % (res, ) != "[4, 5, 6]":
+                    ok = "Wrong result"
+                if not isinstance(res, list):
+                    ok = "Wrong type"
+            elif idx == 4:
+                for k in [",", "+", ".__"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if "%r" % (res, ) != "[4, 5, 6]":
+                    ok = "Wrong result"
+                if not isinstance(res, list):
+                    ok = "Wrong type"
+            elif idx == 5:
+                for k in ["[", "]", "{", "}", ","]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if "%r" % (res, ) != "[123]":
+                    ok = "Wrong result"
+                if not isinstance(res, list):
+                    ok = "Wrong type"
+            elif idx == 6:
+                for k in ["[", "]", "{", "}", ",", "list"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if "%r" % (res, ) != "[123]":
+                    ok = "Wrong result"
+                if not isinstance(res, list):
+                    ok = "Wrong type"
+            elif idx == 7:
+                answer = answer.replace("__dict__", "")
+                for k in ["[", "]", "{", "}", ",", "set", "dict"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if "%r" % (res, ) != "{'a': 123}":
+                    ok = "Wrong result"
+                if not isinstance(res, dict):
+                    ok = "Wrong type"
+            elif idx == 8:
+                for k in ["[", "]", "{", "}", ",", "set", "dict"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if "%r" % (res, ) != "{'a': 123}":
+                    ok = "Wrong result"
+                if not isinstance(res, dict):
+                    ok = "Wrong type"
+            elif idx == 9:
+                for k in ["[", "]", "{", "}", ",", "set", "dict", "lambda", "vars"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if "%r" % (res, ) != "{'a': 123}":
+                    ok = "Wrong result"
+                if not isinstance(res, dict):
+                    ok = "Wrong type"
+            elif idx == 10:
+                for k in [",", "tuple"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if "%r" % (res, ) != "(1, 2)":
+                    ok = "Wrong result"
+                if not isinstance(res, tuple):
+                    ok = "Wrong type"
+            elif idx == 11:
+                for k in ["lambda", "def"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if not callable(res):
+                    ok = "Wrong type"
+                else:
+                    for g in range(-999, 999):
+                        try:
+                            if res(g) != g + 1:
+                                ok = "Wrong result (f(%d) = %s != %d)" % (g, res(g), g + 1)
+                        except Exception as e:
+                            ok = f"Error: {e}"
+            elif idx == 12:
+                for k in ["for"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if not callable(res):
+                    ok = "Wrong type"
+                else:
+                    for g, h in [([4, 5], [6, 7]), ([-4, 5, 1], [-2, 7, 3])]:
+                        try:
+                            if res(g) != h:
+                                ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
+                        except Exception as e:
+                            ok = f"Error: {e}"
+            elif idx == 13:
+                for k in ["for", "map"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if not callable(res):
+                    ok = "Wrong type"
+                else:
+                    for g, h in [([4, 5], [6, 7]), ([-4, 5, 1], [-2, 7, 3])]:
+                        try:
+                            if res(g) != h:
+                                ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
+                        except Exception as e:
+                            ok = f"Error: {e}"
+            elif idx == 14:
+                for k in ["for", "if"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if not callable(res):
+                    ok = "Wrong type"
+                else:
+                    for g, h in [([2, 5], [5]), ([-4, 8, 2, 1], [8])]:
+                        try:
+                            if res(g) != h:
+                                ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
+                        except Exception as e:
+                            ok = f"Error: {e}"
+            elif idx == 15:
+                for k in ["if", "else"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if not callable(res):
+                    ok = "Wrong type"
+                else:
+                    for g, h in [([True, 3, 5], 3), ([False, 3, 5], 5), ([True, [], [1]], []), ([False, [], [1]], [1])]:
+                        try:
+                            if res(*g) != h:
+                                ok = "Wrong result (f%r = %r != %r)" % (tuple(g), res(*g), h)
+                        except Exception as e:
+                            ok = f"Error: {e}"
+            elif idx == 16:
+                for k in ["for", "if", "else", "map", "filter"]:
+                    if k in answer:
+                        ok = "Wrong (cannot have \"%s\")" % k
+                if not callable(res):
+                    ok = "Wrong type"
+                else:
+                    for g, h in [([2, 5, 3], [5, 3]), ([-4, 8, 2, 1], [8])]:
+                        try:
+                            if res(g) != h:
+                                ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
+                        except Exception as e:
+                            ok = f"Error: {e}"
+            return ok + " : %r" % (res, )
+
+        def chk(ev):
+            answer = document.select_one('#questionTextarea').innerText
+            syntax_err = None
+            try:
+                res = eval(answer)
+            except Exception as e:
+                syntax_err = f"Error: {e}"
+            if syntax_err is not None:
+                document.select_one('#quiz-x-check-text').innerHTML = syntax_err
+            else:
+                document.select_one('#quiz-x-check-text').innerHTML = "%s" % chk_detail(res, answer)
+
+        document.select_one('#quiz-x-check-button').bind("click", chk)
+    </script>
+</body>
+
+</html>
