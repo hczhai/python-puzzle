@@ -129,9 +129,16 @@ div[contenteditable] {
 .quiz-header-container {
     background-color: rgba(239, 215, 205, 0.9);
     position: relative;
-    margin-bottom: 3em;
+    margin-bottom: 0em;
     height: 50px;
     z-index: 2;
+}
+
+.quiz-set-container {
+    position: relative;
+    margin-bottom: 3em;
+    height: 50px;
+    z-index: 3;
 }
 
 .quiz-name-text-container {
@@ -367,6 +374,25 @@ div[contenteditable] {
 .selected-answer-button {
     color: rgb(250, 245, 241);
     background-color: rgb(200, 163, 115);
+}
+
+.quiz-header-button {
+    position: relative;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 12px 0px;
+    min-height: 40px;
+    background-color: #e5d1bb;
+    color: #75572d;
+    outline: none;
+    margin: 0px 5px 0px 5px;
+    padding: 0px 14px;
+    border-color: transparent;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
 }
 
 .quiz-continue-button {

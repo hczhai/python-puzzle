@@ -1,6 +1,8 @@
 // Serve an object with this structure in order to generate a quiz page
 // The `correct` key is referential and should not be served
-const quiz = {
+let quiz_set_id = 0
+
+let quiz1 = {
     "name": "Python Puzzles",
     "questions": [
         {
@@ -101,6 +103,54 @@ const quiz = {
         }
     ]
 }
+
+let quiz2 = {
+    "name": "Python Puzzles 2.0",
+    "questions": [
+        {
+            "type": "short",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letter \"c\", create a str object \"'c'\".",
+            "entered": [],
+            "answers": ["type({}).__name__[2]"]
+        },
+        {
+            "type": "short",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letter \"c\" and digits \"0\", \"1\", ..., \"9\", create a str object \"'c'\".",
+            "entered": [],
+            "answers": ["type({}).__name__[([] == []) + ([] == [])]"]
+        },
+        {
+            "type": "short",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letter \"c\" and digits \"0\", \"1\", ..., \"9\" and \"+\" and \"__add__\", create a str object \"'c'\".",
+            "entered": [],
+            "answers": ["type({}).__name__[([] == []) -- ([] == [])]"]
+        },
+        {
+            "type": "short",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letter \"c\" and digits \"0\", \"1\", ..., \"9\" and \"+\" and \"-\" and \"__add__\" and \"__sub__\", create a str object \"'c'\".",
+            "entered": [],
+            "answers": ["type({}).__name__[len([[], []])]"]
+        },
+        {
+            "type": "short",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letter \"c\" and digits \"0\", \"1\", ..., \"9\" and \"+\" and \"-\" and \"__add__\" and \"__sub__\" and \"[\" and \"]\", create a str object \"'c'\".",
+            "entered": [],
+            "answers": ["type({}).__name__.__getitem__(len(((), ())))"]
+        },
+        {
+            "type": "short",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letters \"c\" and \"g\" and digits \"0\", \"1\", ..., \"9\" and \"+\" and \"-\" and \"[\" and \"]\", create a str object \"'c'\".",
+            "entered": [],
+            "answers": ["iter(sorted.__name__.translate(list.__name__.maketrans(list.__name__, type({}).__name__))).__next__()"]
+        },
+        {
+            "type": "short",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letters \"c\" and digits \"0\", \"1\", ..., \"8\" and \".\" and \"(\" and \")\" and \",\", create a str object \"'c'\".",
+            "entered": [],
+            "answers": ["__file__[9]"]
+        },
+    ]
+}
 // Tracks index of question on quiz
 let currentQuestionIndex = 0
 
@@ -115,8 +165,33 @@ const removeAllChildren = (parent) => {
     node.innerHTML = ``
 }
 
+const pre_init = () => {
+    let continueDIV = document.getElementById(`quiz-set-x`)
+    let continueBUTTON = document.createElement(`button`)
+    continueBUTTON.className = `quiz-header-button`
+    continueBUTTON.innerHTML = `Set 1`
+    // Moves to next question on click
+    continueBUTTON.onclick = function() {
+        quiz_set_id = 0
+        currentQuestionIndex = -1
+        loadNewQuestion('next-question-load')
+    }
+    continueDIV.append(continueBUTTON)
+    let continueBUTTON2 = document.createElement(`button`)
+    continueBUTTON2.className = `quiz-header-button`
+    continueBUTTON2.innerHTML = `Set 2`
+    // Moves to next question on click
+    continueBUTTON2.onclick = function() {
+        quiz_set_id = 1
+        currentQuestionIndex = -1
+        loadNewQuestion('next-question-load')
+    }
+    continueDIV.append(continueBUTTON2)
+}
+
 // Initialization functions go here
 const init = () => {
+    quiz = quiz_set_id == 0 ? quiz1 : quiz2
     cr_CheckButton()
     cr_PrevButton()
     cr_ContinueButton()
@@ -129,7 +204,10 @@ const init = () => {
 const loadQuestion = async (question, init) => {
     updateProgessBarStatus()
     let title = document.getElementById(`quiz-name-x`)
-    title.innerHTML = " Python Puzzle " + (currentQuestionIndex + 1).toString()
+    if (quiz_set_id == 0)
+        title.innerHTML = " Python Puzzle " + (currentQuestionIndex + 1).toString()
+    else
+        title.innerHTML = " Python Puzzle v2 " + (currentQuestionIndex + 1).toString()
     let chktxt = document.getElementById(`quiz-x-check-text`)
     chktxt.innerHTML = ""
     cr_QuizQuestionText(question.question)
@@ -188,6 +266,7 @@ const loadTextFormQuestion = () => {
 
 // Saves short and long form objects to local object
 const SaveWrittenAnswers = () => {
+    quiz = quiz_set_id == 0 ? quiz1 : quiz2
     quiz.questions[currentQuestionIndex].entered[0] = document.getElementById(`questionTextarea`).innerHTML
 }
 
@@ -201,6 +280,7 @@ const loadPreviousEnteredChoice = (entered) => {
 
 // re-assigns text to short/long form questions
 const loadPreviousEnteredText = () => {
+    quiz = quiz_set_id == 0 ? quiz1 : quiz2
     let entered = quiz.questions[currentQuestionIndex].entered
     if (entered.length > 0) {
         let answer = document.getElementById(`questionTextarea`)
@@ -338,10 +418,13 @@ const cr_AnswerButton = () => {
 
 // Function to load next question & possible answers in object
 const loadNewQuestion = async (adjustment) => {
+    quiz = quiz_set_id == 0 ? quiz1 : quiz2
     // Saves written answers before moving on to next question
-    let type = quiz.questions[currentQuestionIndex].type
-    if (type == 'long' || type == 'short') {
-        SaveWrittenAnswers()
+    if (currentQuestionIndex != -1) {
+        let type = quiz.questions[currentQuestionIndex].type
+        if (type == 'long' || type == 'short') {
+            SaveWrittenAnswers()
+        }
     }
     // Removes previous question & answers
     if (canLoadNewQuestion(adjustment)) {
@@ -360,6 +443,7 @@ const loadNewQuestion = async (adjustment) => {
 
 // Checks if we have reached the first or last question
 const canLoadNewQuestion = (adjustment) => {
+    quiz = quiz_set_id == 0 ? quiz1 : quiz2
     // In/de-crement based on if user is loading next or previous question
     if (adjustment == `next-question-load`) {
         currentQuestionIndex++
@@ -425,6 +509,7 @@ const selectAnswer = (key, previous) => {
 
 // Indicate previous is true in order to skip storing answers in the local object
 const storeAnswers = (add, key) => {
+    quiz = quiz_set_id == 0 ? quiz1 : quiz2
     // For adding user's answers to the local object
     if (add) {
         if (quiz.questions[currentQuestionIndex].type == `single`) {
@@ -518,6 +603,7 @@ const ad_QuestionIteration = () => {
 
 // Listener for key presses for quiz interaction.
 document.onkeydown = function(evt) {
+    quiz = quiz_set_id == 0 ? quiz1 : quiz2
     evt = evt || window.event;
     // console.log(evt.keyCode)
     // Registers key selectors for A to J on multiple choice questions.
@@ -534,4 +620,5 @@ document.onkeydown = function(evt) {
     }
 };
 
+pre_init()
 init()

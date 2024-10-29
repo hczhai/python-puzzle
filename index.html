@@ -9,8 +9,12 @@
 <body>
     <div class="quiz-page-template-container">
         <div class="quiz-header-container">
-            <div class="quiz-name-text-container">
+            <div class="quiz-name-text-container" id="quiz-header-x">
                 <span class="quiz-name-text" id="quiz-name-x"> Python Puzzle </span>
+            </div>
+        </div>
+        <div class="quiz-set-container">
+            <div class="quiz-name-text-container" id="quiz-set-x">
             </div>
         </div>
         <div class="quiz-main-page" id="quiz-main-page">
@@ -43,175 +47,234 @@
         from browser import document
 
         def chk_detail(res, answer):
+            quiz_v2 = "v2" in document.select_one('#quiz-name-x').innerHTML
             idx = int(document.select_one('#quiz-name-x').innerHTML.split()[-1])
             ok = "Correct"
-            if idx == 1:
-                for k in [","]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "[4, 5, 3]":
-                    ok = "Wrong result"
-                if not isinstance(res, list):
-                    ok = "Wrong type"
-            elif idx == 2:
-                for k in [",", "+"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "[4, 5, 3]":
-                    ok = "Wrong result"
-                if not isinstance(res, list):
-                    ok = "Wrong type"
-            elif idx == 3:
-                for k in [".", "+"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                dep = 0
-                for k in answer:
-                    if k == '[':
-                        dep += 1
-                    elif k == ']':
-                        dep -= 1
-                    elif k == ',' and dep != 0:
-                        ok = "Wrong (cannot have \"%s\" inside \"%s%s\")" % (',', '[', ']')
-                if "%r" % (res, ) != "[4, 5, 3]":
-                    ok = "Wrong result"
-                if not isinstance(res, list):
-                    ok = "Wrong type"
-            elif idx == 4:
-                for k in [",", "+", ".__"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "[4, 5, 3]":
-                    ok = "Wrong result"
-                if not isinstance(res, list):
-                    ok = "Wrong type"
-            elif idx == 5:
-                for k in ["[", "]", "{", "}", ","]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "[123]":
-                    ok = "Wrong result"
-                if not isinstance(res, list):
-                    ok = "Wrong type"
-            elif idx == 6:
-                for k in ["[", "]", "{", "}", ",", "list"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "[123]":
-                    ok = "Wrong result"
-                if not isinstance(res, list):
-                    ok = "Wrong type"
-            elif idx == 7:
-                answer = answer.replace("__dict__", "")
-                for k in ["[", "]", "{", "}", ",", "set", "dict"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "{'a': 123}":
-                    ok = "Wrong result"
-                if not isinstance(res, dict):
-                    ok = "Wrong type"
-            elif idx == 8:
-                for k in ["[", "]", "{", "}", ",", "set", "dict"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "{'a': 123}":
-                    ok = "Wrong result"
-                if not isinstance(res, dict):
-                    ok = "Wrong type"
-            elif idx == 9:
-                for k in ["[", "]", "{", "}", ",", "set", "dict", "lambda", "vars"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "{'a': 123}":
-                    ok = "Wrong result"
-                if not isinstance(res, dict):
-                    ok = "Wrong type"
-            elif idx == 10:
-                for k in [",", "tuple"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if "%r" % (res, ) != "(1, 2)":
-                    ok = "Wrong result"
-                if not isinstance(res, tuple):
-                    ok = "Wrong type"
-            elif idx == 11:
-                for k in ["lambda", "def"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if not callable(res):
-                    ok = "Wrong type"
-                else:
-                    for g in range(-999, 999):
-                        try:
-                            if res(g) != g + 1:
-                                ok = "Wrong result (f(%d) = %s != %d)" % (g, res(g), g + 1)
-                        except Exception as e:
-                            ok = f"Error: {e}"
-            elif idx == 12:
-                for k in ["for"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if not callable(res):
-                    ok = "Wrong type"
-                else:
-                    for g, h in [([4, 5], [6, 7]), ([-4, 5, 1], [-2, 7, 3])]:
-                        try:
-                            if res(g) != h:
-                                ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
-                        except Exception as e:
-                            ok = f"Error: {e}"
-            elif idx == 13:
-                for k in ["for", "map"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if not callable(res):
-                    ok = "Wrong type"
-                else:
-                    for g, h in [([4, 5], [6, 7]), ([-4, 5, 1], [-2, 7, 3])]:
-                        try:
-                            if res(g) != h:
-                                ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
-                        except Exception as e:
-                            ok = f"Error: {e}"
-            elif idx == 14:
-                for k in ["for", "if"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if not callable(res):
-                    ok = "Wrong type"
-                else:
-                    for g, h in [([2, 5], [5]), ([-4, 8, 2, 1], [8])]:
-                        try:
-                            if res(g) != h:
-                                ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
-                        except Exception as e:
-                            ok = f"Error: {e}"
-            elif idx == 15:
-                for k in ["if", "else"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if not callable(res):
-                    ok = "Wrong type"
-                else:
-                    for g, h in [([True, 3, 5], 3), ([False, 3, 5], 5), ([True, [], [1]], []), ([False, [], [1]], [1])]:
-                        try:
-                            if res(*g) != h:
-                                ok = "Wrong result (f%r = %r != %r)" % (tuple(g), res(*g), h)
-                        except Exception as e:
-                            ok = f"Error: {e}"
-            elif idx == 16:
-                for k in ["for", "if", "else", "map", "filter"]:
-                    if k in answer:
-                        ok = "Wrong (cannot have \"%s\")" % k
-                if not callable(res):
-                    ok = "Wrong type"
-                else:
-                    for g, h in [([2, 5, 3], [5, 3]), ([-4, 8, 2, 1], [8])]:
-                        try:
-                            if res(g) != h:
-                                ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
-                        except Exception as e:
-                            ok = f"Error: {e}"
+            if quiz_v2:
+                if idx == 1:
+                    for k in ["\"", "\'", "c"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "\'c\'":
+                        ok = "Wrong result"
+                    if not isinstance(res, str):
+                        ok = "Wrong type"
+                elif idx == 2:
+                    for k in ["\"", "\'", "c", *[str(i) for i in range(10)]]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "\'c\'":
+                        ok = "Wrong result"
+                    if not isinstance(res, str):
+                        ok = "Wrong type"
+                elif idx == 3:
+                    for k in ["\"", "\'", "c", *[str(i) for i in range(10)], "+", "__add__"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "\'c\'":
+                        ok = "Wrong result"
+                    if not isinstance(res, str):
+                        ok = "Wrong type"
+                elif idx == 4:
+                    for k in ["\"", "\'", "c", *[str(i) for i in range(10)], "+", "-", "__add__", "__sub__"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "\'c\'":
+                        ok = "Wrong result"
+                    if not isinstance(res, str):
+                        ok = "Wrong type"
+                elif idx == 5:
+                    for k in ["\"", "\'", "c", *[str(i) for i in range(10)], "+", "-", "__add__", "__sub__", "[", "]"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "\'c\'":
+                        ok = "Wrong result"
+                    if not isinstance(res, str):
+                        ok = "Wrong type"
+                elif idx == 6:
+                    for k in ["\"", "\'", "c", *[str(i) for i in range(10)], "+", "-", "__add__", "__sub__", "[", "]", "g"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "\'c\'":
+                        ok = "Wrong result"
+                    if not isinstance(res, str):
+                        ok = "Wrong type"
+                elif idx == 7:
+                    for k in ["\"", "\'", "c", *[str(i) for i in range(9)], ".", "(", ")", ","]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "\'c\'":
+                        ok = "Wrong result"
+                    if not isinstance(res, str):
+                        ok = "Wrong type"
+            else:
+                if idx == 1:
+                    for k in [","]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "[4, 5, 3]":
+                        ok = "Wrong result"
+                    if not isinstance(res, list):
+                        ok = "Wrong type"
+                elif idx == 2:
+                    for k in [",", "+"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "[4, 5, 3]":
+                        ok = "Wrong result"
+                    if not isinstance(res, list):
+                        ok = "Wrong type"
+                elif idx == 3:
+                    for k in [".", "+"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    dep = 0
+                    for k in answer:
+                        if k == '[':
+                            dep += 1
+                        elif k == ']':
+                            dep -= 1
+                        elif k == ',' and dep != 0:
+                            ok = "Wrong (cannot have \"%s\" inside \"%s%s\")" % (',', '[', ']')
+                    if "%r" % (res, ) != "[4, 5, 3]":
+                        ok = "Wrong result"
+                    if not isinstance(res, list):
+                        ok = "Wrong type"
+                elif idx == 4:
+                    for k in [",", "+", ".__"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "[4, 5, 3]":
+                        ok = "Wrong result"
+                    if not isinstance(res, list):
+                        ok = "Wrong type"
+                elif idx == 5:
+                    for k in ["[", "]", "{", "}", ","]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "[123]":
+                        ok = "Wrong result"
+                    if not isinstance(res, list):
+                        ok = "Wrong type"
+                elif idx == 6:
+                    for k in ["[", "]", "{", "}", ",", "list"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "[123]":
+                        ok = "Wrong result"
+                    if not isinstance(res, list):
+                        ok = "Wrong type"
+                elif idx == 7:
+                    answer = answer.replace("__dict__", "")
+                    for k in ["[", "]", "{", "}", ",", "set", "dict"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "{'a': 123}":
+                        ok = "Wrong result"
+                    if not isinstance(res, dict):
+                        ok = "Wrong type"
+                elif idx == 8:
+                    for k in ["[", "]", "{", "}", ",", "set", "dict"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "{'a': 123}":
+                        ok = "Wrong result"
+                    if not isinstance(res, dict):
+                        ok = "Wrong type"
+                elif idx == 9:
+                    for k in ["[", "]", "{", "}", ",", "set", "dict", "lambda", "vars"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "{'a': 123}":
+                        ok = "Wrong result"
+                    if not isinstance(res, dict):
+                        ok = "Wrong type"
+                elif idx == 10:
+                    for k in [",", "tuple"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "(1, 2)":
+                        ok = "Wrong result"
+                    if not isinstance(res, tuple):
+                        ok = "Wrong type"
+                elif idx == 11:
+                    for k in ["lambda", "def"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if not callable(res):
+                        ok = "Wrong type"
+                    else:
+                        for g in range(-999, 999):
+                            try:
+                                if res(g) != g + 1:
+                                    ok = "Wrong result (f(%d) = %s != %d)" % (g, res(g), g + 1)
+                            except Exception as e:
+                                ok = f"Error: {e}"
+                elif idx == 12:
+                    for k in ["for"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if not callable(res):
+                        ok = "Wrong type"
+                    else:
+                        for g, h in [([4, 5], [6, 7]), ([-4, 5, 1], [-2, 7, 3])]:
+                            try:
+                                if res(g) != h:
+                                    ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
+                            except Exception as e:
+                                ok = f"Error: {e}"
+                elif idx == 13:
+                    for k in ["for", "map"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if not callable(res):
+                        ok = "Wrong type"
+                    else:
+                        for g, h in [([4, 5], [6, 7]), ([-4, 5, 1], [-2, 7, 3])]:
+                            try:
+                                if res(g) != h:
+                                    ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
+                            except Exception as e:
+                                ok = f"Error: {e}"
+                elif idx == 14:
+                    for k in ["for", "if"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if not callable(res):
+                        ok = "Wrong type"
+                    else:
+                        for g, h in [([2, 5], [5]), ([-4, 8, 2, 1], [8])]:
+                            try:
+                                if res(g) != h:
+                                    ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
+                            except Exception as e:
+                                ok = f"Error: {e}"
+                elif idx == 15:
+                    for k in ["if", "else"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if not callable(res):
+                        ok = "Wrong type"
+                    else:
+                        for g, h in [([True, 3, 5], 3), ([False, 3, 5], 5), ([True, [], [1]], []), ([False, [], [1]], [1])]:
+                            try:
+                                if res(*g) != h:
+                                    ok = "Wrong result (f%r = %r != %r)" % (tuple(g), res(*g), h)
+                            except Exception as e:
+                                ok = f"Error: {e}"
+                elif idx == 16:
+                    for k in ["for", "if", "else", "map", "filter"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if not callable(res):
+                        ok = "Wrong type"
+                    else:
+                        for g, h in [([2, 5, 3], [5, 3]), ([-4, 8, 2, 1], [8])]:
+                            try:
+                                if res(g) != h:
+                                    ok = "Wrong result (f(%r) = %r != %r)" % (g, res(g), h)
+                            except Exception as e:
+                                ok = f"Error: {e}"
             return ok + " : %r" % (res, )
 
         def chk(ev):
