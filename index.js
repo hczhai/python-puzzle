@@ -145,7 +145,7 @@ let quiz2 = {
         },
         {
             "type": "short",
-            "question": "Do not use quotes \"\"\" and \"\'\" and letters \"c\" and digits \"0\", \"1\", ..., \"8\" and \".\" and \"(\" and \")\" and \",\", create a str object \"'c'\".",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letter \"c\" and digits \"0\", \"1\", ..., \"8\" and \".\" and \"(\" and \")\" and \",\", create a str object \"'c'\".",
             "entered": [],
             "answers": ["__file__[9]"]
         },
