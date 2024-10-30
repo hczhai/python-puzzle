@@ -92,7 +92,7 @@
                     if not isinstance(res, str):
                         ok = "Wrong type"
                 elif idx == 6:
-                    for k in ["\"", "\'", "c", *[str(i) for i in range(10)], "+", "-", "__add__", "__sub__", "[", "]", "g"]:
+                    for k in ["\"", "\'", "c", *[str(i) for i in range(9)], "+", "-", "__add__", "__sub__", "[", "]", "len"]:
                         if k in answer:
                             ok = "Wrong (cannot have \"%s\")" % k
                     if "%r" % (res, ) != "\'c\'":
@@ -100,6 +100,22 @@
                     if not isinstance(res, str):
                         ok = "Wrong type"
                 elif idx == 7:
+                    for k in ["\"", "\'", "c", *[str(i) for i in range(9)], "+", "-", "__add__", "__sub__", "[", "]", "len", "index"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "\'c\'":
+                        ok = "Wrong result"
+                    if not isinstance(res, str):
+                        ok = "Wrong type"
+                elif idx == 8:
+                    for k in ["\"", "\'", "c", *[str(i) for i in range(9)], "+", "-", "__add__", "__sub__", "[", "]", "g"]:
+                        if k in answer:
+                            ok = "Wrong (cannot have \"%s\")" % k
+                    if "%r" % (res, ) != "\'c\'":
+                        ok = "Wrong result"
+                    if not isinstance(res, str):
+                        ok = "Wrong type"
+                elif idx == 9:
                     for k in ["\"", "\'", "c", *[str(i) for i in range(9)], ".", "(", ")", ","]:
                         if k in answer:
                             ok = "Wrong (cannot have \"%s\")" % k

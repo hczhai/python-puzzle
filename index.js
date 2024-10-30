@@ -139,7 +139,19 @@ let quiz2 = {
         },
         {
             "type": "short",
-            "question": "Do not use quotes \"\"\" and \"\'\" and letters \"c\" and \"g\" and digits \"0\", \"1\", ..., \"9\" and \"+\" and \"-\" and \"[\" and \"]\", create a str object \"'c'\".",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letter \"c\" and digits \"0\", \"1\", ..., \"8\" and \"+\" and \"-\" and \"__add__\" and \"__sub__\" and \"[\" and \"]\" and \"len\", create a str object \"'c'\".",
+            "entered": [],
+            "answers": ["type({}).__name__.__getitem__(((), (), ((),)).index(((),)))"]
+        },
+        {
+            "type": "short",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letter \"c\" and digits \"0\", \"1\", ..., \"8\" and \"+\" and \"-\" and \"__add__\" and \"__sub__\" and \"[\" and \"]\" and \"len\" and \"index\", create a str object \"'c'\".",
+            "entered": [],
+            "answers": ["type({}).__name__.__getitem__(int(str(.9**.999).__getitem__(9)))"]
+        },
+        {
+            "type": "short",
+            "question": "Do not use quotes \"\"\" and \"\'\" and letters \"c\" and \"g\" and digits \"0\", \"1\", ..., \"8\" and \"+\" and \"-\" and \"[\" and \"]\", create a str object \"'c'\".",
             "entered": [],
             "answers": ["iter(sorted.__name__.translate(list.__name__.maketrans(list.__name__, type({}).__name__))).__next__()"]
         },
